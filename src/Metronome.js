@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Metronome.css';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import click1 from './sounds/click1.wav';
 import click2 from './sounds/click2.wav';
 
@@ -10,7 +12,7 @@ class Metronome extends Component {
       playing: false,
       count: 0,
       bpm: 100,
-      beatsPerMeasure: 4
+      time: 4
     }
     this.click1 = new Audio(click1);
     this.click2 = new Audio(click2);
@@ -19,8 +21,22 @@ class Metronome extends Component {
 
   handleBpmChange = event => {
     const bpm = event.target.value;
-    this.setState({ bpm })
-  }
+  
+    if (this.state.playing) {
+      clearInterval(this.timer);
+      this.timer = setInterval(this.playClick, (60 / bpm) * 1000);
+      this.setState({
+        count: 0,
+        bpm
+      });
+    } else {
+      this.setState({ bpm });
+    }
+  };
+
+  // handleTimeChange = event => {
+  //   this.setState({ time: event.target.value })
+  // }
 
   startStop = () => {
     if (this.state.playing) {
@@ -36,7 +52,7 @@ class Metronome extends Component {
       this.setState(
         {
           count: 0,
-          playing: true
+          playing: true,
         },
         this.playClick
       );
@@ -44,16 +60,16 @@ class Metronome extends Component {
   }
 
   playClick = () => {
-    const { count, beatsPerMeasure } = this.state;
+    const { count, time } = this.state;
   
-    if (count % beatsPerMeasure === 0) {
+    if (count % time === 0) {
       this.click2.play();
     } else {
       this.click1.play();
     }
   
     this.setState(state => ({
-      count: (state.count + 1) % state.beatsPerMeasure
+      count: (state.count + 1) % state.time
     }));
   };
   
@@ -71,9 +87,17 @@ class Metronome extends Component {
             value={bpm}
             onChange={this.handleBpmChange} />
         </div>
-        <button onClick={this.startStop}>
+        <form>
+        <TextField
+          id="time"
+          label="Time"
+          margin="normal"
+          onChange={event => this.setState({ time: event.target.value, count: 0 })}
+        />
+        </form>
+        <Button variant="contained" onClick={this.startStop}>
           {playing ? 'Stop' : 'Start'}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -81,3 +105,6 @@ class Metronome extends Component {
 
 
 export default Metronome;
+
+
+
