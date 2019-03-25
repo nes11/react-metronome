@@ -34,10 +34,6 @@ class Metronome extends Component {
     }
   };
 
-  // handleTimeChange = event => {
-  //   this.setState({ time: event.target.value })
-  // }
-
   startStop = () => {
     if (this.state.playing) {
       clearInterval(this.timer);
