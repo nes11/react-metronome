@@ -1,5 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+All the functionality for this metronome is in the front-end, in React. The `onChange` event handler proved useful in making the user experience more fluid. 
+
+## Installation  
+
+To install
+```javascript
+npm install 
+```
+To start the script 
+```javascript
+npm start 
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
